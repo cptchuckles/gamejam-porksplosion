@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="CapsuleShape" id=2]
+
+[node name="FPSPlayer" type="KinematicBody"]
+
+[node name="WorldCollision" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -1.19209e-07, 0 )
+shape = SubResource( 2 )
+
+[node name="Head" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+
+[node name="Camera" type="Camera" parent="Head"]
+
+[node name="InteractRay" type="RayCast" parent="Head"]
+cast_to = Vector3( 0, 0, -4 )
+collide_with_areas = true
+debug_shape_thickness = 5
