@@ -1,12 +1,16 @@
 using Godot;
+using GodotOnReady.Attributes;
 
 public partial class FPSPlayer : KinematicBody
 {
     [Export] private readonly float _speed = 10f;
+    [Export] private readonly float _turn_speed = 3f * Mathf.Pi;
     [Export] private readonly float _stick_deadzone = 0.1f;
 
     private Vector3 _velocity = new();
     private Vector3 _gravity;
+
+    [OnReadyGet("Head")] private Position3D _head;
 
     public FPSPlayer()
     {
@@ -16,6 +20,7 @@ public partial class FPSPlayer : KinematicBody
 
     public override void _PhysicsProcess(float delta)
     {
+        Orientate(delta);
         ComputeVelocity(delta);
 
         _velocity = MoveAndSlideWithSnap(
@@ -25,6 +30,14 @@ public partial class FPSPlayer : KinematicBody
                 stopOnSlope: true,
                 infiniteInertia: false
                 );
+    }
+
+    private void Orientate(float delta)
+    {
+        Vector2 input = Input.GetVector("yaw_right", "yaw_left", "pitch_down", "pitch_up", _stick_deadzone);
+
+        RotateY(input.x * _turn_speed * delta);
+        _head.RotateX(input.y * _turn_speed * delta);
     }
 
     private void ComputeVelocity(float delta)
