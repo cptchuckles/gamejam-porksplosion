@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using GodotOnReady.Attributes;
 
@@ -10,12 +11,21 @@ public partial class FPSPlayer : KinematicBody
     private Vector3 _velocity = new();
     private Vector3 _gravity;
 
+    private Vector2? _mouseDelta = null!;
+    [Export] private readonly float _mouseSensitivity = 0.02f;
+
     [OnReadyGet("Head")] private Position3D _head;
 
     public FPSPlayer()
     {
         _gravity = (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity_vector")
                    * (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
+    }
+
+    [OnReady]
+    private void Ready()
+    {
+        Input.MouseMode = Input.MouseModeEnum.Captured;
     }
 
     public override void _PhysicsProcess(float delta)
@@ -32,13 +42,30 @@ public partial class FPSPlayer : KinematicBody
                 );
     }
 
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        if (@event is InputEventMouseMotion motion) {
+            _mouseDelta = motion.Relative;
+        }
+        else if (@event.IsActionPressed("ui_cancel"))
+        {
+            Input.MouseMode = Input.MouseModeEnum.Visible;
+        }
+    }
     private void Orientate(float delta)
     {
         Vector2 input = Input.GetVector("yaw_right", "yaw_left", "pitch_down", "pitch_up", _stickDeadzone);
         input *= input.Length();
 
+        if (_mouseDelta.HasValue)
+        {
+            input = - _mouseDelta.Value * _mouseSensitivity;
+            _mouseDelta = null;
+        }
+
         RotateY(input.x * _turnSpeed * delta);
         _head.RotateX(input.y * _turnSpeed * delta);
+
         _head.Rotation = _head.Rotation with {
             x = Mathf.Clamp(_head.Rotation.x, -Mathf.Pi / 2, Mathf.Pi / 2),
         };
