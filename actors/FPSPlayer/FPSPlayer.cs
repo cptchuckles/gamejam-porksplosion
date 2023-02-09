@@ -16,6 +16,7 @@ public partial class FPSPlayer : KinematicBody
 
     [OnReadyGet("Head")] private Position3D _head;
     [OnReadyGet("Head/InteractRay")] private RayCast _interactRay;
+    private int _score = 0;
 
     public FPSPlayer()
     {
@@ -95,5 +96,11 @@ public partial class FPSPlayer : KinematicBody
             z = input.y,
         };
         _velocity = GlobalTransform.basis.Xform(_velocity);
+    }
+
+    public void Score(int value)
+    {
+        _score += value;
+        GetNode("Head/Camera/HUD").GetNode<Label>("%Score").Text = $"{_score}";
     }
 }
