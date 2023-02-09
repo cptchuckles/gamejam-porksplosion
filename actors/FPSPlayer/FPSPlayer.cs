@@ -4,8 +4,8 @@ using GodotOnReady.Attributes;
 public partial class FPSPlayer : KinematicBody
 {
     [Export] private readonly float _speed = 10f;
-    [Export] private readonly float _turn_speed = 3f * Mathf.Pi;
-    [Export] private readonly float _stick_deadzone = 0.1f;
+    [Export] private readonly float _turnSpeed = 3f * Mathf.Pi;
+    [Export] private readonly float _stickDeadzone = 0.2f;
 
     private Vector3 _velocity = new();
     private Vector3 _gravity;
@@ -34,17 +34,20 @@ public partial class FPSPlayer : KinematicBody
 
     private void Orientate(float delta)
     {
-        Vector2 input = Input.GetVector("yaw_right", "yaw_left", "pitch_down", "pitch_up", _stick_deadzone);
+        Vector2 input = Input.GetVector("yaw_right", "yaw_left", "pitch_down", "pitch_up", _stickDeadzone);
+        input *= input.Length();
 
-        RotateY(input.x * _turn_speed * delta);
-        _head.RotateX(input.y * _turn_speed * delta);
+        RotateY(input.x * _turnSpeed * delta);
+        _head.RotateX(input.y * _turnSpeed * delta);
+        _head.Rotation = _head.Rotation with {
+            x = Mathf.Clamp(_head.Rotation.x, -Mathf.Pi / 2, Mathf.Pi / 2),
+        };
     }
 
     private void ComputeVelocity(float delta)
     {
-        Vector2 input = Input.GetVector("left", "right", "forward", "back", _stick_deadzone);
-        GD.Print(input.Length());
-        input *= _speed;
+        Vector2 input = Input.GetVector("left", "right", "forward", "back", _stickDeadzone);
+        input *= input.Length() * _speed;
 
         _velocity += _gravity * delta;
         _velocity = _velocity with
