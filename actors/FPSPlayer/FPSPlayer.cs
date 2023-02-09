@@ -15,6 +15,7 @@ public partial class FPSPlayer : KinematicBody
     [Export] private readonly float _mouseSensitivity = 0.02f;
 
     [OnReadyGet("Head")] private Position3D _head;
+    [OnReadyGet("Head/InteractRay")] private RayCast _interactRay;
 
     public FPSPlayer()
     {
@@ -51,7 +52,18 @@ public partial class FPSPlayer : KinematicBody
         {
             Input.MouseMode = Input.MouseModeEnum.Visible;
         }
+        else if (@event.IsActionPressed("use"))
+        {
+            if (_interactRay.IsColliding())
+            {
+                if (_interactRay.GetCollider() is IInteractable interactable)
+                {
+                    interactable.Interact(this);
+                }
+            }
+        }
     }
+
     private void Orientate(float delta)
     {
         Vector2 input = Input.GetVector("yaw_right", "yaw_left", "pitch_down", "pitch_up", _stickDeadzone);
