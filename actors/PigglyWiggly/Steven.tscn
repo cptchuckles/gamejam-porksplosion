@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://actors/PigglyWiggly/Steven.glb" type="PackedScene" id=1]
+
+[sub_resource type="CapsuleShape" id=1]
+radius = 0.97715
+height = 0.840312
+
+[node name="Steven" type="KinematicBody"]
+
+[node name="Steven" parent="." instance=ExtResource( 1 )]
+transform = Transform( 0.878125, 0, 0, 0, 0.878125, 0, 0, 0, 0.878125, 0, -0.53311, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.483184, -0.312084 )
+shape = SubResource( 1 )

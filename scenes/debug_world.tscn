@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/debug_grid.material" type="Material" id=1]
 [ext_resource path="res://actors/FPSPlayer/FPSPlayer.tscn" type="PackedScene" id=2]
 [ext_resource path="res://actors/CashMoney/CashMoney.tscn" type="PackedScene" id=3]
+[ext_resource path="res://actors/PigglyWiggly/Steven.tscn" type="PackedScene" id=4]
 
 [node name="World" type="Spatial"]
 
@@ -40,3 +41,12 @@ transform = Transform( -0.0797099, 0, -0.996818, 0, 1, 0, 0.996818, 0, -0.079709
 
 [node name="CashMoney4" parent="." instance=ExtResource( 3 )]
 transform = Transform( 0.977585, 0, 0.210543, 0, 1, 0, -0.210543, 0, 0.977585, -4.57043, -0.208648, -1.88909 )
+
+[node name="Steven" parent="." instance=ExtResource( 4 )]
+transform = Transform( 0.83953, 0, -0.543313, 0, 1, 0, 0.543313, 0, 0.83953, 1.02971, -0.454053, 8.00677 )
+
+[node name="Steven2" parent="." instance=ExtResource( 4 )]
+transform = Transform( 0.319717, 0, 0.947513, 0, 1, 0, -0.947513, 0, 0.319717, 1.95999, -0.454053, 3.21204 )
+
+[node name="Steven3" parent="." instance=ExtResource( 4 )]
+transform = Transform( -0.999821, 0, -0.0189262, 0, 1, 0, 0.0189262, 0, -0.999821, -2.34063, -0.454053, -4.31225 )
