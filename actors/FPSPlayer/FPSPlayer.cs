@@ -42,11 +42,12 @@ public partial class FPSPlayer : KinematicBody
                 stopOnSlope: true,
                 infiniteInertia: false
                 );
+
+        HandleRevealingHand();
     }
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if (@event is InputEventMouseMotion motion) {
         if (@event is InputEventMouseMotion motion)
         {
             _mouseDelta = motion.Relative;
@@ -67,6 +68,18 @@ public partial class FPSPlayer : KinematicBody
         }
     }
 
+    private void HandleRevealingHand()
+    {
+        if (_interactRay.IsColliding() && _interactRay.GetCollider() is IInteractable)
+        {
+            _hud.ShowHand();
+        }
+        else
+        {
+            _hud.HideHand();
+        }
+    }
+
     private void Orientate(float delta)
     {
         Vector2 input = Input.GetVector("yaw_right", "yaw_left", "pitch_down", "pitch_up", _stickDeadzone);
@@ -81,7 +94,8 @@ public partial class FPSPlayer : KinematicBody
         RotateY(input.x * _turnSpeed * delta);
         _head.RotateX(input.y * _turnSpeed * delta);
 
-        _head.Rotation = _head.Rotation with {
+        _head.Rotation = _head.Rotation with
+        {
             x = Mathf.Clamp(_head.Rotation.x, -Mathf.Pi / 2, Mathf.Pi / 2),
         };
     }
