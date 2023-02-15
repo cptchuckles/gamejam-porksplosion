@@ -1,4 +1,3 @@
-using System;
 using Godot;
 using GodotOnReady.Attributes;
 
@@ -16,6 +15,7 @@ public partial class FPSPlayer : KinematicBody
 
     [OnReadyGet("Head")] private Position3D _head;
     [OnReadyGet("Head/InteractRay")] private RayCast _interactRay;
+    [OnReadyGet("Head/Camera/HUD")] private Hud _hud;
     private int _score = 0;
 
     public FPSPlayer()
@@ -47,6 +47,8 @@ public partial class FPSPlayer : KinematicBody
     public override void _UnhandledInput(InputEvent @event)
     {
         if (@event is InputEventMouseMotion motion) {
+        if (@event is InputEventMouseMotion motion)
+        {
             _mouseDelta = motion.Relative;
         }
         else if (@event.IsActionPressed("ui_cancel"))
@@ -72,7 +74,7 @@ public partial class FPSPlayer : KinematicBody
 
         if (_mouseDelta.HasValue)
         {
-            input = - _mouseDelta.Value * _mouseSensitivity;
+            input = -_mouseDelta.Value * _mouseSensitivity;
             _mouseDelta = null;
         }
 
@@ -101,6 +103,6 @@ public partial class FPSPlayer : KinematicBody
     public void Score(int value)
     {
         _score += value;
-        GetNode("Head/Camera/HUD").GetNode<Label>("%Score").Text = $"{_score}";
+        _hud.SetCashMoney(_score);
     }
 }
