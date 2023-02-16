@@ -1,0 +1,70 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://actors/Steven/Steven.glb" type="PackedScene" id=1]
+[ext_resource path="res://actors/Steven/StevenSkin.material" type="Material" id=2]
+[ext_resource path="res://actors/Steven/Steven.cs" type="Script" id=3]
+
+[sub_resource type="SpatialMaterial" id=2]
+params_specular_mode = 2
+albedo_color = Color( 0, 0, 0, 1 )
+metallic = 1.0
+metallic_specular = 1.0
+
+[sub_resource type="CapsuleShape" id=1]
+radius = 0.97715
+height = 0.840312
+
+[node name="Steven" type="KinematicBody"]
+script = ExtResource( 3 )
+
+[node name="Steven" parent="." instance=ExtResource( 1 )]
+transform = Transform( 0.878125, 0, 0, 0, 0.878125, 0, 0, 0, 0.878125, 0, -0.924507, 0 )
+
+[node name="Body" parent="Steven" index="0"]
+material/0 = ExtResource( 2 )
+
+[node name="Head" parent="Steven/Body" index="0"]
+material/0 = ExtResource( 2 )
+
+[node name="EarLeft" parent="Steven/Body/Head" index="0"]
+material/0 = ExtResource( 2 )
+
+[node name="EarRight" parent="Steven/Body/Head" index="1"]
+material/0 = ExtResource( 2 )
+
+[node name="EyeLeft" parent="Steven/Body/Head" index="2"]
+transform = Transform( 0.361, 0, 0, 0, -2.99541e-08, 0.685269, 0, -0.685269, -2.99541e-08, -0.284817, 0.314262, -0.670631 )
+material/0 = SubResource( 2 )
+
+[node name="EyeRight" parent="Steven/Body/Head" index="3"]
+transform = Transform( 0.361, 0, 0, 0, -2.99541e-08, 0.685269, 0, -0.685269, -2.99541e-08, 0.284057, 0.314262, -0.670631 )
+material/0 = SubResource( 2 )
+
+[node name="Schnauze" parent="Steven/Body/Head" index="4"]
+material/0 = ExtResource( 2 )
+
+[node name="LegFrontLeft" parent="Steven/Body" index="1"]
+material/0 = ExtResource( 2 )
+
+[node name="LegFrontRight" parent="Steven/Body" index="2"]
+material/0 = ExtResource( 2 )
+
+[node name="LegRearLeft" parent="Steven/Body" index="3"]
+material/0 = ExtResource( 2 )
+
+[node name="LegRearRight" parent="Steven/Body" index="4"]
+material/0 = ExtResource( 2 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0917866, -0.312084 )
+shape = SubResource( 1 )
+
+[node name="RandomGoalTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 15.0
+autostart = true
+
+[node name="WalkGoal" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.29597 )
+
+[editable path="Steven"]
