@@ -5,50 +5,86 @@ public partial class Steven : KinematicBody
 {
     [Export] private bool _walking = true;
     [Export] private readonly float _topSpeed = 3f;
-    [Export(PropertyHint.Range, "0.0,1.0")] private readonly float _newGoalOdds = .5f;
+    [Export] private readonly float _acceleration = 5f;
 
-    [OnReadyGet("%RandomGoalTimer")] private Timer _pickGoalTimer;
+    [Export(PropertyHint.Range, "0.0,1.0")]
+    private readonly float _newGoalOdds = .5f;
 
-    private readonly RandomNumberGenerator rng = new();
+    [OnReadyGet("%RandomGoalTimer")]
+    private Timer _pickGoalTimer;
 
+    [OnReadyGet("%Hitbox")] private Area _hitbox;
+
+    private readonly RandomNumberGenerator _rng = new();
+
+    private Vector2 _input = new();
     private float _speed;
     private Vector3 _velocity;
-    private readonly Vector3 _gravity = (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity_vector")
-                                        * (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
+    private Vector3 _look;
+    private Vector3 _gravityAccumulator = new();
+    private readonly Vector3 _gravity =
+        (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity_vector")
+        * (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
 
     [OnReady]
     private void Ready()
     {
+        _look = -GlobalTransform.basis.z;
         _speed = _walking ? _topSpeed : 0f;
-        rng.Randomize();
+        _rng.Randomize();
         _ = _pickGoalTimer.Connect("timeout", this, nameof(AutonomousInput));
+        _ = _hitbox.Connect("area_entered", this, nameof(OnHitReceived));
+    }
+
+    private void OnHitReceived(Area other)
+    {
+        if (other is Fruit)
+        {
+            GD.Print("Steven down");
+            other.Owner.QueueFree();
+        }
     }
 
     public override void _PhysicsProcess(float delta)
     {
-        _speed = Mathf.MoveToward(_speed, _walking ? _topSpeed : 0f, 5f * delta);
+        _gravityAccumulator += _gravity * delta;
+        _speed = Mathf.MoveToward(_speed,
+                                  _walking ? _topSpeed : 0f,
+                                  _acceleration * delta);
 
-        // TODO: make walking work
+        _velocity = new Vector3(_input.x, 0f, _input.y) * _speed;
 
-        LookAt(ToGlobal(_velocity with { y = 0f }), Vector3.Up);
-        _velocity = MoveAndSlide(_velocity, Vector3.Up);
+        if (_velocity.Length() > 0f)
+        {
+            _look = _look.LinearInterpolate(
+                GlobalTranslation.DirectionTo(GlobalTranslation + _velocity),
+                0.2f);
+
+            LookAt(GlobalTranslation + _look, Vector3.Up);
+        }
+        _ = MoveAndSlide(_velocity + _gravityAccumulator, Vector3.Up);
+
+        if (IsOnFloor())
+        {
+            _gravityAccumulator = new();
+        }
     }
 
     private void AutonomousInput()
     {
-        if (rng.Randf() > _newGoalOdds)
+        if (_rng.Randf() > _newGoalOdds)
         {
             return;
         }
 
-        if (rng.Randf() < _newGoalOdds)
+        if (_rng.Randf() < _newGoalOdds)
         {
             _walking = !_walking;
         }
 
-        if (_walking && rng.Randf() < _newGoalOdds)
+        if (_walking && _rng.Randf() < _newGoalOdds)
         {
-            // TODO: move the WalkGoal around in local space
+            _input = Vector2.Right.Rotated(_rng.Randf() * Mathf.Pi * 2f);
         }
     }
 }
