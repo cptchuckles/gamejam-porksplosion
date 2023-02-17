@@ -1,12 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://actors/FPSPlayer/FPSPlayer.cs" type="Script" id=1]
 [ext_resource path="res://ui/HUD.tscn" type="PackedScene" id=2]
+[ext_resource path="res://actors/FPSPlayer/Bazooka/Bazooka.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape" id=2]
 
 [node name="FPSPlayer" type="KinematicBody"]
-collision_mask = 11
+collision_layer = 16
+collision_mask = 33
 script = ExtResource( 1 )
 _turnSpeed = 6.28
 
@@ -24,7 +26,13 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 [node name="InteractRay" type="RayCast" parent="Head"]
 enabled = true
 cast_to = Vector3( 0, 0, -4 )
-collision_mask = 12
+collision_mask = 4
 collide_with_areas = true
 debug_shape_custom_color = Color( 0, 0.729412, 0.803922, 1 )
 debug_shape_thickness = 5
+
+[node name="Hand" type="Position3D" parent="Head"]
+unique_name_in_owner = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.72341, -0.76513, -0.67819 )
+
+[node name="Bazooka" parent="Head/Hand" instance=ExtResource( 3 )]
