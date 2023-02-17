@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://actors/FPSPlayer/Bazooka/Bazooka.cs" type="Script" id=1]
+[ext_resource path="res://actors/Fruit/Fruit.tscn" type="PackedScene" id=2]
+
+[sub_resource type="CylinderMesh" id=1]
+top_radius = 0.2
+bottom_radius = 0.2
+
+[node name="Bazooka" type="Spatial"]
+script = ExtResource( 1 )
+_projectile = ExtResource( 2 )
+
+[node name="Muzzle" type="Position3D" parent="."]
+unique_name_in_owner = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+mesh = SubResource( 1 )
