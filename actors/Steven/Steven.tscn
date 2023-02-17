@@ -64,7 +64,4 @@ unique_name_in_owner = true
 wait_time = 15.0
 autostart = true
 
-[node name="WalkGoal" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.29597 )
-
 [editable path="Steven"]
