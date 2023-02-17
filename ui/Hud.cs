@@ -3,12 +3,13 @@ using GodotOnReady.Attributes;
 
 public partial class Hud : Control
 {
+    [OnReadyGet("%Score")] private Label _score;
     [OnReadyGet("%GrabbyHand")] private TextureRect _hand;
     [OnReadyGet("%Crosshair")] private TextureRect _crosshair;
 
     public void SetCashMoney(int amount)
     {
-        GetNode<Label>("%Score").Text = amount.ToString();
+        _score.Text = amount.ToString();
     }
 
     public void ShowHand()
