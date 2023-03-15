@@ -43,9 +43,6 @@ wait_time = 1.0
 [node name="Steven4" parent="." instance=ExtResource( 4 )]
 transform = Transform( -0.944922, 0, 0.327297, 0, 1, 0, -0.327297, 0, -0.944922, -14.2488, -0.454053, -7.80537 )
 
-[node name="CollisionShape" parent="Steven4" index="1"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0917866, -0.312084 )
-
 [node name="RandomGoalTimer" parent="Steven4" index="2"]
 wait_time = 1.0
 
