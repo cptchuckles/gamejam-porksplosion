@@ -1,6 +1,7 @@
+using System;
 using Godot;
 
-public class Projectile : RigidBody
+public class Projectile : RigidBody, IFruit
 {
     [Export] private float _launchForce = 10f;
     [Export] private readonly float _launchTorque = 3f;
@@ -29,5 +30,9 @@ public class Projectile : RigidBody
             .TweenProperty(this, "scale", Vector3.Zero, .5f)
             .Connect("finished", this, "queue_free");
     }
+
+    public void GetEaten()
+    {
+        QueueFree();
     }
 }

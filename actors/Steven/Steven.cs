@@ -38,10 +38,10 @@ public partial class Steven : KinematicBody
 
     private void OnHitReceived(Area other)
     {
-        if (other is Fruit)
+        if (other.Owner is IFruit fruit)
         {
             GD.Print("Steven down");
-            other.Owner.QueueFree();
+            fruit.GetEaten();
         }
     }
 
