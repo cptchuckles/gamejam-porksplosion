@@ -47,7 +47,6 @@ public partial class Steven : KinematicBody
 
     public override void _PhysicsProcess(float delta)
     {
-        _gravityAccumulator += _gravity * delta;
         _speed = Mathf.MoveToward(_speed,
                                   _walking ? _topSpeed : 0f,
                                   _acceleration * delta);
@@ -62,11 +61,14 @@ public partial class Steven : KinematicBody
 
             LookAt(GlobalTranslation + _look, Vector3.Up);
         }
+
+        _gravityAccumulator += _gravity * delta;
+
         _ = MoveAndSlide(_velocity + _gravityAccumulator, Vector3.Up);
 
         if (IsOnFloor())
         {
-            _gravityAccumulator = new();
+            _gravityAccumulator -= _gravityAccumulator;
         }
     }
 
