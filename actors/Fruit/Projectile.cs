@@ -19,6 +19,15 @@ public class Projectile : RigidBody
         Vector3 vector3Random = new Vector3(GD.Randf(), GD.Randf(), GD.Randf()).Normalized();
         ApplyTorqueImpulse(vector3Random * GD.Randf() * _launchTorque);
 
-        GetTree().CreateTimer(_lifeSpan).Connect("timeout", this, "queue_free");
+        GetTree().CreateTimer(_lifeSpan).Connect("timeout", this, nameof(LifetimeOver));
+    }
+
+    private void LifetimeOver()
+    {
+        CreateTween()
+            .SetProcessMode(Tween.TweenProcessMode.Physics)
+            .TweenProperty(this, "scale", Vector3.Zero, .5f)
+            .Connect("finished", this, "queue_free");
+    }
     }
 }
