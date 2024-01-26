@@ -8,7 +8,7 @@
 [node name="World" type="Spatial"]
 
 [node name="CashMoney" parent="." instance=ExtResource( 3 )]
-transform = Transform( 0.999848, 0, -0.0174521, 0, 1, 0, 0.0174521, 0, 0.999848, 1.79792, -0.0560763, -4.56319 )
+transform = Transform( 0.999848, 0, -0.0174521, 0, 1, 0, 0.0174521, 0, 0.999848, 1.79792, 4.11244, -4.56319 )
 
 [node name="FPSPlayer" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
