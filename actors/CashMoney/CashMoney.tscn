@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://actors/CashMoney/CashMoney.cs" type="Script" id=1]
 [ext_resource path="res://actors/CashMoney/CoinModel.glb" type="PackedScene" id=2]
@@ -45,19 +45,31 @@ tracks/1/keys = {
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 359, 0 ) ]
 }
 
-[node name="CashMoney" type="Area" groups=["Interactable"]]
+[sub_resource type="SphereShape" id=4]
+radius = 0.623567
+
+[node name="CashMoney" type="RigidBody"]
+collision_layer = 128
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+
+[node name="CoinPickup" type="Area" parent="." groups=["Interactable"]]
 transform = Transform( 0.999848, 0, -0.0174521, 0, 1, 0, 0.0174521, 0, 0.999848, 0, 0, 0 )
 collision_layer = 4
 collision_mask = 0
 script = ExtResource( 1 )
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
+[node name="CollisionShape" type="CollisionShape" parent="CoinPickup"]
 shape = SubResource( 1 )
 
-[node name="CoinModel" parent="." instance=ExtResource( 2 )]
+[node name="CoinModel" parent="CoinPickup" instance=ExtResource( 2 )]
 transform = Transform( 0.309293, 0, 0, 0, 0.309293, 0, 0, 0, 0.309293, 0, 0, 0 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CoinPickup"]
 autoplay = "SpinToWin"
 anims/RESET = SubResource( 2 )
 anims/SpinToWin = SubResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 4 )
